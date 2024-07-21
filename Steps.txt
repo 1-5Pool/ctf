@@ -1,0 +1,113 @@
+# Deploying a Dockerized Python HTTP Server on Heroku
+
+Follow these steps to create a simple Python http.server in a Docker container and deploy it to Heroku:
+
+1. **Create project structure**
+   Create a new directory for your project and navigate to it:
+   ```
+   mkdir docker-heroku-server
+   cd docker-heroku-server
+   ```
+
+2. **Create a simple Python server**
+   Create a file named `server.py` with the following content:
+
+   ```python
+   import http.server
+   import socketserver
+
+   PORT = 8080
+   Handler = http.server.SimpleHTTPRequestHandler
+
+   with socketserver.TCPServer(("", PORT), Handler) as httpd:
+       print(f"Serving at port {PORT}")
+       httpd.serve_forever()
+   ```
+
+3. **Create a simple HTML file**
+   Create a file named `index.html` with the following content:
+
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Dockerized Python Server on Heroku</title>
+   </head>
+   <body>
+       <h1>Hello, Docker and Heroku!</h1>
+       <p>This page is served by a Dockerized Python http.server on Heroku.</p>
+   </body>
+   </html>
+   ```
+
+4. **Create a Dockerfile**
+   Create a file named `Dockerfile` (no extension) with the following content:
+
+   ```dockerfile
+   # Use an official Python runtime as a parent image
+   FROM python:3.9-slim
+
+   # Set the working directory in the container
+   WORKDIR /app
+
+   # Copy the current directory contents into the container at /app
+   COPY . /app
+
+   # Make port 8080 available to the world outside this container
+   EXPOSE 8080
+
+   # Run server.py when the container launches
+   CMD ["python", "server.py"]
+   ```
+
+5. **Create a .dockerignore file**
+   Create a file named `.dockerignore` with the following content:
+
+   ```
+   __pycache__
+   *.pyc
+   *.pyo
+   *.pyd
+   .git
+   .vscode
+   ```
+
+6. **Build and test Docker image locally**
+   ```
+   docker build -t python-http-server .
+   docker run -p 8080:8080 python-http-server
+   ```
+   Visit `http://localhost:8080` in your browser to test.
+
+7. **Set up Heroku**
+   - Install the Heroku CLI if you haven't already
+   - Login to Heroku: `heroku login`
+
+8. **Create a Heroku app**
+   ```
+   heroku create your-app-name
+   ```
+
+9. **Set up Heroku Container Registry**
+   ```
+   heroku container:login
+   ```
+
+10. **Build and push Docker image to Heroku**
+    ```
+    heroku container:push web -a your-app-name
+    ```
+
+11. **Release the container**
+    ```
+    heroku container:release web -a your-app-name
+    ```
+
+12. **Open your app**
+    ```
+    heroku open -a your-app-name
+    ```
+
+Your Dockerized Python http.server should now be live on Heroku!
