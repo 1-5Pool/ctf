@@ -5,7 +5,7 @@
         setTimeout(() => {
             // This will cause an error, and the error message will contain the current URL
             throw new Error("Exfiltrating URL: " + window.location.href);
-        }, 2000); // Wait for 2 seconds to ensure any redirects have completed
+        }, 200); // Wait for 2 seconds to ensure any redirects have completed
     };
 </script>
 </body>
